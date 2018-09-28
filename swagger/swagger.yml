@@ -8,6 +8,18 @@ tags:
     description: Users API
 paths:
   /users:
+    get:
+      tags:
+        - Users
+      summary: Show list of users API
+      description: Show list of users API
+      responses:
+        '200':
+          description: Successfully show list of users
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
     post:
       tags:
         - Users
@@ -48,6 +60,13 @@ paths:
         - Users
       summary: Read user API
       description: Read user API
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User id
       responses:
         '200':
           description: Successfully show user details
@@ -55,96 +74,21 @@ paths:
           description: Unauthorized
         '500':
           description: Internal server error
-  /users:
-    get:
-      tags:
-        - Users
-      summary: Show list of users API
-      description: Show list of users API
-      responses:
-        '200':
-          description: Successfully show list of users
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /users/{id}:
     put:
       tags:
         - Users
       summary: 
-      description: Get Scorecard API
+      description: Update user details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User id
       responses:
         '200':
-          description: Scorecard generated successfuly
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ScorecardResponse'
-                  page:
-                    type: integer
-                  page_size:
-                    type: integer
-                  total_count:
-                    type: integer
-                  page_count:
-                    type: integer
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /calculations/scorecard_eligible:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Calculations
-      summary: Scorecard eligible
-      description: Scorecard eligible API
-      responses:
-        '200':
-          description: Scorecard eligible generated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ScorecardResponse'
-                  page:
-                    type: integer
-                  page_size:
-                    type: integer
-                  total_count:
-                    type: integer
-                  page_count:
-                    type: integer
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /calculations/update_scorecard:
-    put:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Calculations
-      summary: Update scorecard details
-      description: Update scorecard API
-      responses:
-        '200':
-          description: successfully update scorecard
+          description: Successfuly update user details
         '401':
           description: Unauthorized
         '500':
@@ -154,258 +98,44 @@ paths:
           application/json:
             schema:
               type: object
+              example:
+                firstName: prashant
+                lastName: sharma
+                email: "prashant.sharma.cse172gmail.com"
               required:
-                - tradeLineId
-                - isDone
+                - firstName
+                - lastName
+                - email
               properties:
-                tradeLineId:
-                  type: integer
-                isDone:
-                  type: boolean
-        description: Send updated data values in request body
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+        description: User's details
         required: true
-  /calculations/client_ranking:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
+    delete:
       tags:
-        - Calculations
-      summary: Client ranking
-      description: Client ranking API
-      parameters:
-        - in: query
-          name: sortBy
-          description: Use for sorting the data
-          schema:
-            type: string
-        - in: query
-          name: sortOrder
-          description: Use for sorting the data
-          schema:
-            type: string
-        - in: query
-          name: page
-          description: Use for pagination
-          schema:
-            type: integer
-        - in: query
-          name: page_size
-          description: Use for pagination
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Client ranking data successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ScorecardResponse'
-                  page:
-                    type: integer
-                  page_size:
-                    type: integer
-                  total_count:
-                    type: integer
-                  page_count:
-                    type: integer
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /calculations/progress:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Calculations
-      summary: Scorecard progress
-      description: Scorecard progress
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  type:
-                    type: string
-                  task:
-                    type: string
-                  value:
-                    type: number
-                  createdAt:
-                    type: string
-                  updatedAt:
-                    type: string
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /calculations/status:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Calculations
-      summary: Scorecard status
-      description: Scorecard progress
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  busy:
-                    type: boolean
-                  progress:
-                    type: number
-                  task:
-                    type: string
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /roles_tree:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Roles
-      summary: Get roles tree
-      description: Get roles tree API
-      responses:
-        '200':
-          description: Successfully get roles tree
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /sync_from_crm:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Roles
-      summary: Synchronize from CRM
-      description: Synchronize from CRM API
-      responses:
-        '200':
-          description: Successfully synchronize with CRM
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /source/data/get:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Source-data
-      summary: Get source data
-      description: Get source data API
-      responses:
-        '200':
-          description: Successfully import source data
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /source/data/test:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Source-data
-      summary: Test source data
-      description: Test source data API
-      responses:
-        '200':
-          description: Successfully test source data
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-  /tradeline/{tradelineId}:
-    patch:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - Tradelines
-      summary: Update tradelines state and service
-      description: Update tradelines state and service API
+        - Users
+      summary: Delete user API
+      description: Delete user API
       parameters:
         - in: path
-          name: tradelineId
+          name: id
           schema:
             type: integer
           required: true
-          description: tradeLineId for update tradelines state and service
-      requestBody:
-        description: tradelineBody
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Tradeline'
+          description: User id
       responses:
         '200':
-          description: Successfully update tradelines
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "[1]"
+          description: Successfully delete user
         '401':
           description: Unauthorized
-        '500':
-          description: Internal server error
-  /me:
-    get:
-      security:
-        - salesforceAuth:
-            - 'admin'
-            - 'user'
-      tags:
-        - User Profile
-      summary: Show user profile
-      description: Show user profile
-      responses:
-        '200':
-          description: Success
-        '401':
-          description: Unauthorized
-        '404':
-          description: No Profile Found
         '500':
           description: Internal server error
 servers:
-  - url: 'localhost:3000'
+  - url: 'http://localhost:5000'
 components:
   securitySchemes:
   schemas:

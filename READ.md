@@ -1,7 +1,7 @@
 Stepwise run the project:
 
 sudo docker-compose build
-sudo docker-compose up
+sudo docker-compose up -d
 
 Run command in terminal to check for connectivity with postgresql
 psql -h localhost -p 5432 -U docker -W docker -d  postgres

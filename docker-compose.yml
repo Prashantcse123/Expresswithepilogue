@@ -5,8 +5,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_PASSWORD: docker
-      POSTGRES_USER: docker
+      POSTGRES_USER: development
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: db_development
     ports:
       - 5432:5432

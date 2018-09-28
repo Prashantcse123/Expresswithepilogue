@@ -1,25 +1,9 @@
-const express = require('express');
 
-const router = express.Router();
-
-router.get('/', (req, res) => {
-  res.send('show list of users');
+const db = require('../models/index');
+const User = require('../models/user')(db.sequelize, db.Sequelize);
+const epilogue = require('../epilogue');
+// Create REST resource
+let userResource = epilogue.resource({
+  model: User,
+  endpoints: ['/users', '/users/:id'],
 });
-
-router.get('/:id', (req, res) => {
-  res.send('show specific user');
-});
-
-router.post('/', (req, res) => {
-  res.send('create user');
-});
-
-router.put('/:id', (req, res) => {
-  res.send('update user');
-});
-
-router.delete('/:id', (req, res) => {
-  res.send('show specific user');
-});
-
-module.exports = router;
